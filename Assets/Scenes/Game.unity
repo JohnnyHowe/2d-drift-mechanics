@@ -450,12 +450,12 @@ MonoBehaviour:
   engineForce: 25
   maxSteeringAngle: 100
   maxDriftSteeringAngle: 150
-  driftAccelMul: 0.4
+  driftAccelMul: 0.6
   perpendicularDrag: 1
   AcceleratingPerpendicularDrag: 0.3
   parallelDrag: 0.15
-  driftAngleWeight: 0.5
-  driftSteeringWeight: 0.5
+  driftAngleWeight: 0.05
+  driftSteeringWeight: 3
 --- !u!50 &911743982
 Rigidbody2D:
   serializedVersion: 4

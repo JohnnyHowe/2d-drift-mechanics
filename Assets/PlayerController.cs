@@ -14,6 +14,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) controller.steering += 1;
         if (Input.GetKey(KeyCode.A)) controller.steering -= 1;
         // trail.SetActive(controller.IsDrift());
-        trail.emitting = !controller.IsDrift();
+        trail.emitting = controller.ShouldDrift();
     }
 }

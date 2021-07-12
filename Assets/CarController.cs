@@ -6,16 +6,18 @@ public class CarController : MonoBehaviour
     public float throttle = 0;
     public float steering = 0;
     [Header("Engine")]
-    public float engineForce = 10;
+    public float engineForce = 25;
     [Header("Steering")]
-    public float maxSteeringAngle = 30;
-    public float maxDriftSteeringAngle = 30;
+    public float maxSteeringAngle = 100;
+    public float maxDriftSteeringAngle = 150;
     [Header("Tires")]
-    public float maxPerpendicularWheelGrip = 3;
-    public float driftAccelMul = 0.1f;
+    public float driftAccelMul = 0.6f;
     public float perpendicularDrag = 1f;
-    public float AcceleratingPerpendicularDrag = 1f;
-    public float parallelDrag = 1f;
+    public float AcceleratingPerpendicularDrag = 0.3f;
+    public float parallelDrag = 0.15f;
+    [Header("Tires (Drift Parameters)")]
+    public float driftAngleWeight = 0.05f;
+    public float driftSteeringWeight = 3f;
 
     Rigidbody2D rb;
 
@@ -38,12 +40,15 @@ public class CarController : MonoBehaviour
     }
 
     public bool ShouldDrift() {
-        float perp = GetWheelPerpendicularForce();
-        return perp > maxPerpendicularWheelGrip;
+        return GetDriftAngle() * driftAngleWeight + Mathf.Abs(steering) * driftSteeringWeight >= 1;
+    }
+
+    float GetDriftAngle() {
+        return Vector3.Angle(rb.velocity.normalized, transform.up);
     }
 
     float GetWheelPerpendicularForce() {
-        return GetVelocityInDir(transform.right).magnitude * rb.mass;
+        return GetVelocityInDir(transform.right).magnitude;
     }
 
     float GetWheelDriveForce()

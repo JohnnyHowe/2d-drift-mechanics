@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     public CarController controller;
     public TrailRenderer trail;
+    public float throttle = 1;
 
     void Update()
     {
@@ -16,7 +17,7 @@ public class PlayerController : MonoBehaviour
         // trail.SetActive(controller.IsDrift());
         trail.emitting = controller.ShouldDrift();
 
-        controller.throttle = 1;
+        controller.throttle = throttle;
         controller.steering = -TouchInput.centeredScreenPosition.x;
     }
 }

@@ -11,16 +11,17 @@ public class TrackSection : MonoBehaviour
 
     public Curve[] curves;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
+    public Vector3 GetPoint(float t) {
+        return transform.TransformPoint(GetPointLocalSpace(t));
     }
 
-    // Update is called once per frame
-    void Update()
+    public Vector3 GetPointLocalSpace(float t)
     {
-
+        float s = t * curves.Length;
+        int curveIndex = Mathf.FloorToInt(s);
+        float ts = s - curveIndex;
+        if (t == 1) { curveIndex -= 1; ts = 1; }
+        return curves[curveIndex].GetPoint(ts);
     }
 
     public void Validate()
@@ -50,7 +51,7 @@ public class TrackSection : MonoBehaviour
                 for (int j = 0; j < pointsPerCurve; j++)
                 {
                     int index = pointsPerCurve * i + j;
-                    float t = ((float) j) / pointsPerCurve;
+                    float t = ((float)j) / pointsPerCurve;
                     // lineRenderer.SetPosition(index, curves[i].GetPoint(t));
                     lineRenderer.SetPosition(index, transform.TransformPoint(curves[i].GetPoint(t)));
                 }

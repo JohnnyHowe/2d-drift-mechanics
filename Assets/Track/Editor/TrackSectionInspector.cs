@@ -23,7 +23,7 @@ public class TrackSectionInspector : Editor
         {
             DrawCurve(ref track.curves[i]);
         }
-        track.curves[tl - 1].p3 = handleTransform.InverseTransformPoint(DrawPoint(handleTransform.TransformPoint(track.curves[tl - 1].p3), "Track Point"));
+        track.curves[tl - 1].p3 = handleTransform.InverseTransformPoint(DrawPoint(handleTransform.TransformPoint(track.curves[tl - 1].p3), "End Track Point"));
         if (changedFlag)
         {
             track.Validate();

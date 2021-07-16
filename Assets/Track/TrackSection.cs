@@ -51,10 +51,11 @@ public class TrackSection : MonoBehaviour
                 {
                     int index = pointsPerCurve * i + j;
                     float t = ((float) j) / pointsPerCurve;
-                    lineRenderer.SetPosition(index, curves[i].GetPoint(t));
+                    // lineRenderer.SetPosition(index, curves[i].GetPoint(t));
+                    lineRenderer.SetPosition(index, transform.TransformPoint(curves[i].GetPoint(t)));
                 }
             }
-            lineRenderer.SetPosition(numPoints - 1, curves[curves.Length - 1].GetPoint(1f));
+            lineRenderer.SetPosition(numPoints - 1, transform.TransformPoint(curves[curves.Length - 1].GetPoint(1f)));
         }
     }
 }

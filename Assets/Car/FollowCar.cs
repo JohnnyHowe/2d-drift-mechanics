@@ -13,7 +13,8 @@ public class FollowCar : MonoBehaviour
     {
         Vector3 current = transform.position;
         Vector3 next = car.transform.position + car.transform.up * forwardOffset;
+        float distance = (current - next).magnitude;
         next.z = current.z;
-        transform.position = Vector3.Lerp(current, next, speed * Time.fixedDeltaTime);
+        transform.position = Vector3.Lerp(current, next, speed * Time.fixedDeltaTime * distance * distance);
     }
 }

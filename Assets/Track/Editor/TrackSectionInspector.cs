@@ -16,19 +16,31 @@ public class TrackSectionInspector : Editor
         handleTransform = track.transform;
         handleRotation = Tools.pivotRotation == PivotRotation.Local ?
             handleTransform.rotation : Quaternion.identity;
-        
+
         // Draw curves
         int tl = track.curves.Length;
-        for (int i = 0; i < tl; i ++) {
+        for (int i = 0; i < tl; i++)
+        {
             DrawCurve(ref track.curves[i]);
         }
         track.curves[tl - 1].p3 = handleTransform.InverseTransformPoint(DrawPoint(handleTransform.TransformPoint(track.curves[tl - 1].p3), "Track Point"));
-        if (changedFlag) {
+        if (changedFlag)
+        {
             track.Validate();
         }
     }
 
-    private void DrawCurve(ref Curve curve) {
+    public override void OnInspectorGUI()
+    {
+        track = target as TrackSection;
+        if (GUILayout.Button("Update Line Renderer")) {
+            track.Validate();
+        };
+        base.OnInspectorGUI();
+    }
+
+    private void DrawCurve(ref Curve curve)
+    {
         Vector3 start = handleTransform.TransformPoint(curve.p0);
         Vector3 c1 = handleTransform.TransformPoint(curve.p1);
         Vector3 c2 = handleTransform.TransformPoint(curve.p2);
@@ -45,19 +57,22 @@ public class TrackSectionInspector : Editor
 
         // Draw actual curve
         Handles.color = Color.white;
-        Vector3 lineStart = curve.GetPoint(0f);
-        for (float i = 0; i <= track.pointsPerCurve; i ++) {
+        Vector3 lineStart = track.transform.TransformPoint(curve.GetPoint(0f));
+        for (float i = 0; i <= track.pointsPerCurve; i++)
+        {
             float t = i / track.pointsPerCurve;
-            Vector3 lineEnd = curve.GetPoint(t);
+            Vector3 lineEnd = track.transform.TransformPoint(curve.GetPoint(t));
             Handles.DrawLine(lineStart, lineEnd);
             lineStart = lineEnd;
         }
     }
 
-    private Vector3 DrawPoint(Vector3 point, string label) {
+    private Vector3 DrawPoint(Vector3 point, string label)
+    {
         EditorGUI.BeginChangeCheck();
         Vector3 p = Handles.DoPositionHandle(point, handleRotation);
-        if (EditorGUI.EndChangeCheck()) {
+        if (EditorGUI.EndChangeCheck())
+        {
             changedFlag = true;
         }
         Handles.Label(p, label);

@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowCar : MonoBehaviour
+public class FollowTrack : MonoBehaviour
 {
+    public PresetTrack track;
     public Transform car;
+    public float lookAhead = 2;
     public float speed = 1f;
     public float rotSpeed = 1f;
-    public float forwardOffset = 4f;
 
-    // Update is called once per frame
+        public Transform mark;
     void FixedUpdate()
     {
-        SmoothFollow(car.transform.position + car.transform.up * forwardOffset);
+        Vector2 trackPt = track.GetCentreLinePoint(track.GetDistance(car.position) + lookAhead);
+        mark.position = (Vector3) trackPt + Vector3.forward * -5;
+        // transform.position = Vector3.forward * transform.position.z + (Vector3) trackPt; 
+        SmoothFollow(trackPt);
     }
 
     void SmoothFollow(Vector2 next)

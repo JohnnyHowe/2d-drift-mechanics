@@ -8,19 +8,27 @@ public class PresetTrack : MonoBehaviour, Track
     public List<Vector2> points;
     public LineRenderer line;
     public float trackWidth = 8;
-    public Transform car;
-    public Transform c1;
-    public Transform c2;
-    public Transform mp;
+    public float d;
 
     public Vector2 GetCentreLinePoint(float distance)
     {
-        throw new System.NotImplementedException();
+        int p1i = Mathf.FloorToInt(distance) % points.Count;
+        if (p1i < 0) p1i += points.Count;
+        int p2i = Mathf.CeilToInt(distance) % points.Count;
+        if (p2i < 0) p2i += points.Count;
+        Vector2 p1 = points[p1i];
+        Vector2 p2 = points[p2i];
+        return Vector2.Lerp(p1, p2, distance % 1);
     }
 
     public float GetDistance(Vector2 point)
     {
-        throw new System.NotImplementedException();
+        int[] pts = GetClosestPointIndices(point);
+        Vector2 mid = GetClosestInterpolatedPoint(point);
+        float d1 = (points[pts[0]] - mid).magnitude;
+        float d2 = (points[pts[1]] - mid).magnitude;
+        float t = d1 / (d1 + d2);
+        return pts[0] + t;
     }
 
     public bool IsOnTrack(Vector2 point)
@@ -29,14 +37,14 @@ public class PresetTrack : MonoBehaviour, Track
     }
 
     private Vector2 GetClosestInterpolatedPoint(Vector2 point) {
-        Vector2[] points = GetClosestPoints(car.position);
+        Vector2[] points = GetClosestPoints(point);
 
         Vector2 onto = points[1] - points[0];
-        Vector2 vec = (Vector2) car.transform.position - points[0];
+        Vector2 vec = (Vector2) point - points[0];
         return (Vector2) Vector3.Project(vec, onto) + points[0];
     }
 
-    private Vector2[] GetClosestPoints(Vector2 point) {
+    private int[] GetClosestPointIndices(Vector2 point) {
         float minDist = -1;
         int minIndex = 0;
         int i = 0;
@@ -60,18 +68,23 @@ public class PresetTrack : MonoBehaviour, Track
         Vector2 leftPoint = points[leftIndex];
         Vector2 leftVec = (leftPoint - minPoint).normalized;
         Vector2 normLeftPoint = minPoint + leftVec;
-        float leftDist = (normLeftPoint - (Vector2) car.transform.position).magnitude;
+        float leftDist = (normLeftPoint - (Vector2) point).magnitude;
 
         Vector2 rightPoint = points[rightIndex];
         Vector2 rightVec = (rightPoint - minPoint).normalized;
         Vector2 normRightPoint = minPoint + rightVec;
-        float rightDist = (normRightPoint - (Vector2) car.transform.position).magnitude;
+        float rightDist = (normRightPoint - (Vector2) point).magnitude;
 
         if (leftDist < rightDist) {
-            return new Vector2[2] {points[leftIndex], points[minIndex]};
+            return new int[] {leftIndex, minIndex};
         } else {
-            return new Vector2[2] {minPoint, points[rightIndex]};
+            return new int[] {minIndex, rightIndex};
         }
+    }
+
+    private Vector2[] GetClosestPoints(Vector2 point) {
+        int[] pts = GetClosestPointIndices(point); 
+        return new Vector2[] {points[pts[0]], points[pts[1]]};
     }
 
     void Start()
@@ -86,14 +99,5 @@ public class PresetTrack : MonoBehaviour, Track
             i ++;
         }
             line.SetPosition(i, transform.GetChild(0).position);
-    }
-
-    void Update() {
-        Vector2[] points = GetClosestPoints(car.position);
-        c1.position = (Vector3) points[0] + Vector3.forward * c1.position.z;
-        c2.position = (Vector3) points[1] + Vector3.forward * c1.position.z;
-        mp.position = (Vector3) GetClosestInterpolatedPoint(car.position) + Vector3.forward * mp.position.z;
-        if (!IsOnTrack(car.position)) {Camera.main.backgroundColor = Color.red;}
-        else {Camera.main.backgroundColor = Color.green;}
     }
 }

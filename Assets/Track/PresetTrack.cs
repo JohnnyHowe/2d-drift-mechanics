@@ -25,7 +25,7 @@ public class PresetTrack : MonoBehaviour, Track
 
     public bool IsOnTrack(Vector2 point)
     {
-        throw new System.NotImplementedException();
+        return (GetClosestInterpolatedPoint(point) - point).magnitude < trackWidth / 2;
     }
 
     private Vector2 GetClosestInterpolatedPoint(Vector2 point) {
@@ -89,10 +89,11 @@ public class PresetTrack : MonoBehaviour, Track
     }
 
     void Update() {
-        Handles.color = Color.red;
         Vector2[] points = GetClosestPoints(car.position);
         c1.position = (Vector3) points[0] + Vector3.forward * c1.position.z;
         c2.position = (Vector3) points[1] + Vector3.forward * c1.position.z;
         mp.position = (Vector3) GetClosestInterpolatedPoint(car.position) + Vector3.forward * mp.position.z;
+        if (!IsOnTrack(car.position)) {Camera.main.backgroundColor = Color.red;}
+        else {Camera.main.backgroundColor = Color.green;}
     }
 }

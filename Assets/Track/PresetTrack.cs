@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class PresetTrack : MonoBehaviour, Track
+public class PresetTrack : Track
 {
     public List<Vector2> points;
     public LineRenderer line;
@@ -31,7 +31,7 @@ public class PresetTrack : MonoBehaviour, Track
         return pts[0] + t;
     }
 
-    public bool IsOnTrack(Vector2 point)
+    public override bool IsOnTrack(Vector2 point)
     {
         return (GetClosestInterpolatedPoint(point) - point).magnitude < trackWidth / 2;
     }

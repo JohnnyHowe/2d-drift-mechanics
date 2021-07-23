@@ -1,25 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public interface Track
+/// <summary>
+/// Implements TrackInterface and MonoBehaviour
+/// Only exists so we can nicely use the track interface in the inspector
+/// 
+/// So for track implementations, they should inherit from this.
+/// </summary>
+public abstract class Track : MonoBehaviour, TrackInterface
 {
-    /// <summary>
-    /// Is the point on the track
-    /// </summary>
-    /// <param name="point"></param>
-    /// <returns></returns>
-    bool IsOnTrack(Vector2 point);
-
-    /// <summary>
-    /// What is the distance from the start of the track to the closest position to point on the track?
-    /// </summary>
-    /// <param name="point"></param>
-    /// <returns></returns>
-    float GetDistance(Vector2 point);
-
-    /// <summary>
-    /// What is the position along the centre line of the track at distance from the start of the track
-    /// </summary>
-    /// <param name="distance"></param>
-    /// <returns></returns>
-    Vector2 GetCentreLinePoint(float distance);
+    public abstract bool IsOnTrack(Vector2 point);
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CarController : MonoBehaviour
+public class CarController : Car
 {
     [Header("Control")]
     public float throttle = 0;
@@ -43,7 +43,7 @@ public class CarController : MonoBehaviour
         return GetDriftAngle() * driftAngleWeight + Mathf.Abs(steering) * driftSteeringWeight >= 1;
     }
 
-    float GetDriftAngle() {
+    public override float GetDriftAngle() {
         return Vector3.Angle(rb.velocity.normalized, transform.up);
     }
 
@@ -94,5 +94,10 @@ public class CarController : MonoBehaviour
         float drag = v.magnitude * v.magnitude;
         float clockwiseMul = Mathf.Sign(Vector3.Cross(transform.right.normalized, rb.velocity.normalized).z);
         return -transform.up * drag * parallelDrag * clockwiseMul;
+    }
+
+    public override float GetDriftSpeed()
+    {
+        return GetVelocityInDir(transform.up).magnitude;
     }
 }

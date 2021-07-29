@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class ScoreHandler : MonoBehaviour
 {
-    [SerializeField]
     private float score;
     public Car car;
+    [SerializeField]
+    private float scale = 1;
+    [SerializeField]
+    private float angleWeight = 1;
+    [SerializeField]
+    private float speedWeight = 1;
 
     public int GetScore() {
         return (int) score;
@@ -25,6 +30,6 @@ public class ScoreHandler : MonoBehaviour
     }
 
     float GetInstantScore(float angle, float speed) {
-        return Mathf.Pow(angle * speed * 0.01f, 2);
+        return (angle * angleWeight + speed * speedWeight) * scale;
     }
 }

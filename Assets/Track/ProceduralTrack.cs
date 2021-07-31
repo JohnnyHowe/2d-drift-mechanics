@@ -22,9 +22,6 @@ public class ProceduralTrack : MonoBehaviour
     void Start()
     {
         currentTrackSections = new List<TrackSection>();
-        // TrackSection copy = new TrackSection();
-        // copy = trackSections[0];
-        // currentTrackSections.Add(copy);
         CreateStart();
         UpdateRenderer();
     }
@@ -40,24 +37,33 @@ public class ProceduralTrack : MonoBehaviour
     }
 
     void AddNewSection(TrackSection section) {
-        // Create new section
-        TrackSection instantiatedSection = new TrackSection();
-        instantiatedSection = section;
-        // Align section
-        AlignSection(instantiatedSection, lastEndPosition, lastEndPosition);
+        TrackSection instantiatedSection = CopySection(section);
+        AlignSection(instantiatedSection, lastEndPosition, lastEndDirection);
         currentTrackSections.Add(instantiatedSection);
+
+        int nPts = instantiatedSection.curvePoints.Length;
+        lastEndPosition = instantiatedSection.curvePoints[nPts - 1];
+        lastEndDirection = (instantiatedSection.curvePoints[nPts - 1] - instantiatedSection.curvePoints[nPts - 2]).normalized;
     }
 
     void AlignSection(TrackSection instantiatedSection, Vector2 startPosition, Vector2 startDirection) {
         Vector2 offset = startPosition - instantiatedSection.curvePoints[0];
-        // foreach (Vector2 point in instantiatedSection.curvePoints) {
+        Vector2 startGradient = (instantiatedSection.curvePoints[0] - instantiatedSection.curvePoints[1]).normalized;
+
         for (int i = 0; i < instantiatedSection.curvePoints.Length; i++) {
-            // Translate
             Vector2 transformedPoint = instantiatedSection.curvePoints[i] + offset;
-            // Rotate
-            // instantiatedSection.curvePoints[i] = RotateAround(transformedPoint, startPosition, Vector2.Angle(startDirection, lastEndDirection));
-            instantiatedSection.curvePoints[i] = transformedPoint;
+            instantiatedSection.curvePoints[i] = RotateAround(transformedPoint, startPosition, 180-Vector2.SignedAngle(startGradient, lastEndDirection));
         }
+    }
+
+    TrackSection CopySection(TrackSection section) {
+        TrackSection newSection = new TrackSection();
+
+        newSection.curvePoints = new Vector2[section.curvePoints.Length];
+        for (int i = 0; i < section.curvePoints.Length; i++) {
+            newSection.curvePoints[i] = section.curvePoints[i];
+        }
+        return newSection;
     }
 
     Vector2 RotateAround(Vector2 point, Vector2 origin, float degreesClockWise) {
@@ -66,8 +72,10 @@ public class ProceduralTrack : MonoBehaviour
         float px = point.x;
         float py = point.y;
 
-        float qx = ox + Mathf.Cos(degreesClockWise) * (px - ox) - Mathf.Sin(degreesClockWise) * (py - oy);
-        float qy = oy + Mathf.Sin(degreesClockWise) * (px - ox) + Mathf.Cos(degreesClockWise) * (py - oy);
+        float angle = -degreesClockWise * Mathf.PI / 180;
+
+        float qx = ox + Mathf.Cos(angle) * (px - ox) - Mathf.Sin(angle) * (py - oy);
+        float qy = oy + Mathf.Sin(angle) * (px - ox) + Mathf.Cos(angle) * (py - oy);
         return new Vector2(qx, qy);
     }
 

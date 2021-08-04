@@ -2098,21 +2098,18 @@ MonoBehaviour:
   startPosition: {x: 0, y: 0}
   startDirection: {x: 0, y: 1}
   startTrackSections:
-  - {fileID: 11400000, guid: 80aee0b4ef165744ab2d468e2af03a6b, type: 2}
-  - {fileID: 11400000, guid: 80aee0b4ef165744ab2d468e2af03a6b, type: 2}
-  - {fileID: 11400000, guid: 5d5326399b2d31740be2faf1f85ab7f7, type: 2}
-  - {fileID: 11400000, guid: 80aee0b4ef165744ab2d468e2af03a6b, type: 2}
-  - {fileID: 11400000, guid: 80aee0b4ef165744ab2d468e2af03a6b, type: 2}
   - {fileID: 11400000, guid: 5d5326399b2d31740be2faf1f85ab7f7, type: 2}
   - {fileID: 11400000, guid: 5d5326399b2d31740be2faf1f85ab7f7, type: 2}
-  - {fileID: 11400000, guid: 5d5326399b2d31740be2faf1f85ab7f7, type: 2}
-  - {fileID: 11400000, guid: 5d5326399b2d31740be2faf1f85ab7f7, type: 2}
-  - {fileID: 11400000, guid: 80aee0b4ef165744ab2d468e2af03a6b, type: 2}
   trackSections:
   - {fileID: 11400000, guid: 80aee0b4ef165744ab2d468e2af03a6b, type: 2}
+  - {fileID: 11400000, guid: 5d5326399b2d31740be2faf1f85ab7f7, type: 2}
   lineRenderer: {fileID: 954293316}
+  car: {fileID: 0}
+  forwardBufferSections: 5
+  rearBufferSections: 3
   splineAccuracy: 25
   scale: 10
+  g: 0
 --- !u!4 &954293318
 Transform:
   m_ObjectHideFlags: 0

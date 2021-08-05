@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5195946964323339877}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.03, y: 0.53, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7dc213589dde5340bec60decf64742e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  section: {fileID: 11400000, guid: 80aee0b4ef165744ab2d468e2af03a6b, type: 2}
+  section: {fileID: 11400000, guid: 3c41086ca19dab549a1c9b0b095346d1, type: 2}
   lineRenderer: {fileID: 1257285210296155496}
   splineAccuracy: 25
 --- !u!120 &1257285210296155496
@@ -86,7 +86,32 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Positions: []
+  m_Positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0.0003996371, y: 0.11989411, z: 0}
+  - {x: 0.0031970968, y: 0.2391529, z: 0}
+  - {x: 0.010790202, y: 0.35714105, z: 0}
+  - {x: 0.025576774, y: 0.47322324, z: 0}
+  - {x: 0.049954645, y: 0.58676416, z: 0}
+  - {x: 0.086321615, y: 0.6971285, z: 0}
+  - {x: 0.13707554, y: 0.80368084, z: 0}
+  - {x: 0.20461419, y: 0.905786, z: 0}
+  - {x: 0.29133552, y: 1.0028086, z: 0}
+  - {x: 0.39963716, y: 1.0941132, z: 0}
+  - {x: 0.53191704, y: 1.1790648, z: 0}
+  - {x: 0.6905729, y: 1.2570276, z: 0}
+  - {x: 0.8780027, y: 1.3273668, z: 0}
+  - {x: 1.0966043, y: 1.3894467, z: 0}
+  - {x: 1.3487755, y: 1.4426322, z: 0}
+  - {x: 1.6369135, y: 1.4862878, z: 0}
+  - {x: 1.9634174, y: 1.5197784, z: 0}
+  - {x: 2.3306842, y: 1.5424685, z: 0}
+  - {x: 2.741111, y: 1.5537226, z: 0}
+  - {x: 3.1970973, y: 1.5529059, z: 0}
+  - {x: 3.7010393, y: 1.5393827, z: 0}
+  - {x: 4.2553363, y: 1.5125178, z: 0}
+  - {x: 4.8623853, y: 1.4716758, z: 0}
+  - {x: 5.5245833, y: 1.4162214, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1

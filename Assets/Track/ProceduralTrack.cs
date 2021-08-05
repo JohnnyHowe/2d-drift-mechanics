@@ -20,8 +20,6 @@ public class ProceduralTrack : Track
     public int splineAccuracy = 25;
     public float scale = 10;
     private List<TrackSection> currentTrackSections;
-    public int g;
-
 
     void Start()
     {
@@ -74,8 +72,6 @@ public class ProceduralTrack : Track
     }
 
     void CreateStart() {
-        // Create inital section
-        // TODO what if start track sections empty?
         lastEndPosition = startPosition;
         lastEndDirection = startDirection;
         foreach (TrackSection section in startTrackSections) {
@@ -88,7 +84,7 @@ public class ProceduralTrack : Track
     }
 
     void AddNewSection(TrackSection section) {
-        TrackSection instantiatedSection = CopySection(section);
+        TrackSection instantiatedSection = NewSection(section);
         AlignSection(instantiatedSection, lastEndPosition, lastEndDirection);
         currentTrackSections.Add(instantiatedSection);
 
@@ -97,38 +93,16 @@ public class ProceduralTrack : Track
         lastEndDirection = (instantiatedSection.curvePoints[nPts - 1] - instantiatedSection.curvePoints[nPts - 2]).normalized;
     }
 
-    void AlignSection(TrackSection instantiatedSection, Vector2 startPosition, Vector2 startDirection) {
+    void AlignSection(TrackSection instantiatedSection, Vector2 startPosition, Vector2 startGradient) {
         Vector2 offset = startPosition - instantiatedSection.curvePoints[0];
-        Vector2 startGradient = (instantiatedSection.curvePoints[0] - instantiatedSection.curvePoints[1]).normalized;
-        // TODO what if curve 1 and 2 are same?
-        for (int i = 0; i < instantiatedSection.curvePoints.Length; i++) {
-            Vector2 transformedPoint = instantiatedSection.curvePoints[i] + offset;
-            instantiatedSection.curvePoints[i] = RotateAround(transformedPoint, startPosition, 180-Vector2.SignedAngle(startGradient, lastEndDirection));
-        }
+        instantiatedSection.AlignSection(startPosition, startGradient);
     }
 
-    TrackSection CopySection(TrackSection section) {
-        TrackSection newSection = new TrackSection();
-
-        newSection.curvePoints = new Vector2[section.curvePoints.Length];
-        for (int i = 0; i < section.curvePoints.Length; i++) {
-            newSection.curvePoints[i] = section.curvePoints[i] * scale;
-        }
-        return newSection;
+    TrackSection NewSection(TrackSection section) {
+        return section.Copy().Scale(scale);
     }
 
-    Vector2 RotateAround(Vector2 point, Vector2 origin, float degreesClockWise) {
-        float ox = origin.x;
-        float oy = origin.y;
-        float px = point.x;
-        float py = point.y;
-
-        float angle = -degreesClockWise * Mathf.PI / 180;
-
-        float qx = ox + Mathf.Cos(angle) * (px - ox) - Mathf.Sin(angle) * (py - oy);
-        float qy = oy + Mathf.Sin(angle) * (px - ox) + Mathf.Cos(angle) * (py - oy);
-        return new Vector2(qx, qy);
-    }
+    
 
     void UpdateRenderer()
     {

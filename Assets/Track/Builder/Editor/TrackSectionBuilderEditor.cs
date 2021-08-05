@@ -19,6 +19,7 @@ public class TrackSectionBuilderEditor : Editor
         section = builder.section;
         if (section)
         {
+            Undo.RecordObject(section, "Zero Transform Position");
             numCurves = Mathf.FloorToInt((section.curvePoints.Length - 1) / 3);
             DrawSpline();
             DrawHandles();
@@ -32,6 +33,7 @@ public class TrackSectionBuilderEditor : Editor
     }
 
     public override void OnInspectorGUI() {
+        Undo.RecordObject(section, "Zero Transform Position");
         base.OnInspectorGUI();
         if (section) {
             DrawTextInput();

@@ -33,9 +33,9 @@ public class TrackSectionBuilderEditor : Editor
     }
 
     public override void OnInspectorGUI() {
-        Undo.RecordObject(section, "Zero Transform Position");
         base.OnInspectorGUI();
         if (section) {
+            Undo.RecordObject(section, "Zero Transform Position");
             DrawTextInput();
         }
     }
@@ -43,7 +43,7 @@ public class TrackSectionBuilderEditor : Editor
     void DrawTextInput() {
         EditorGUILayout.LabelField("Curve Points", EditorStyles.boldLabel);
         for (int i = 0; i < section.curvePoints.Length; i++) {
-            section.curvePoints[i] = EditorGUILayout.Vector2Field("gg", section.curvePoints[i]);
+            section.curvePoints[i] = EditorGUILayout.Vector2Field(GetPointName(i, section.curvePoints.Length), section.curvePoints[i]);
         }
     }
 

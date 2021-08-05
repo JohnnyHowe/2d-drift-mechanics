@@ -8,22 +8,40 @@ using UnityEditor;
 public class TrackSectionBuilderEditor : Editor
 {
     TrackSection section;
+    TrackSection lastSection;
     TrackSectionBuilder builder;
     int numCurves;
-
-    void OnEnable() {
-        builder = (TrackSectionBuilder)target;
-        section = builder.section;
-        UpdateLineRenderer();
-    }
+    bool changed = false;
 
     void OnSceneGUI()
     {
+        builder = (TrackSectionBuilder)target;
+        section = builder.section;
         if (section)
         {
             numCurves = Mathf.FloorToInt((section.curvePoints.Length - 1) / 3);
             DrawSpline();
             DrawHandles();
+        } else {
+            numCurves = 0;
+        }
+
+        if (lastSection != section) changed = true;
+        if (changed) UpdateLineRenderer();
+        lastSection = section;
+    }
+
+    public override void OnInspectorGUI() {
+        base.OnInspectorGUI();
+        if (section) {
+            DrawTextInput();
+        }
+    }
+
+    void DrawTextInput() {
+        EditorGUILayout.LabelField("Curve Points", EditorStyles.boldLabel);
+        for (int i = 0; i < section.curvePoints.Length; i++) {
+            section.curvePoints[i] = EditorGUILayout.Vector2Field("gg", section.curvePoints[i]);
         }
     }
 
@@ -37,15 +55,15 @@ public class TrackSectionBuilderEditor : Editor
         }
         if (EditorGUI.EndChangeCheck())
         {
-            UpdateLineRenderer();
+            changed = true;
         }
     }
 
     void UpdateLineRenderer() {
-        builder.lineRenderer.positionCount = numCurves * builder.splineAccuracy;
+        builder.lineRenderer.positionCount = numCurves * builder.splineAccuracy + 1;
         for (int j = 0; j < numCurves; j++) {
             int offset = j * 3;
-            for (int i = 0; i < builder.splineAccuracy; i++) {
+            for (int i = 0; i <= builder.splineAccuracy; i++) {
                 float t = (float)i / builder.splineAccuracy;
                 Vector2 current = BezierCurve.GetPoint(section.curvePoints[0 + offset], section.curvePoints[1 + offset], section.curvePoints[2 + offset], section.curvePoints[3 + offset], t);
                 int index = j * builder.splineAccuracy + i;

@@ -85,7 +85,7 @@ public class ProceduralTrack : Track
 
     void AddNewSection(TrackSection section) {
         TrackSection instantiatedSection = NewSection(section);
-        AlignSection(instantiatedSection, lastEndPosition, lastEndDirection);
+        instantiatedSection.AlignSection(lastEndPosition, lastEndDirection);
         currentTrackSections.Add(instantiatedSection);
 
         int nPts = instantiatedSection.curvePoints.Length;
@@ -93,16 +93,9 @@ public class ProceduralTrack : Track
         lastEndDirection = (instantiatedSection.curvePoints[nPts - 1] - instantiatedSection.curvePoints[nPts - 2]).normalized;
     }
 
-    void AlignSection(TrackSection instantiatedSection, Vector2 startPosition, Vector2 startGradient) {
-        Vector2 offset = startPosition - instantiatedSection.curvePoints[0];
-        instantiatedSection.AlignSection(startPosition, startGradient);
-    }
-
     TrackSection NewSection(TrackSection section) {
         return section.Copy().Scale(scale);
     }
-
-    
 
     void UpdateRenderer()
     {

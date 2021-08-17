@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TestTrackSection
   m_EditorClassIdentifier: 
   curvePoints:
-  - {x: 0.24692273, y: -0.023476362}
+  - {x: 0, y: 1.1813388}
   - {x: 0.5908057, y: -2.780863}
   - {x: -3.4087353, y: -2.393323}
   - {x: -6.1297803, y: -0.30718416}
